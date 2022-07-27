@@ -1,0 +1,216 @@
+#
+# wm independent hotkeys
+#
+
+ctrl + alt + Delete
+  cd ~ && rofi -show power-menu -modi power-menu:./rofi-power-menu
+
+#~button3
+#  xqp 0 $(xdo id -N Bspwm -n root) && jgmenu_run 
+
+# terminal emulator
+super + Return
+#    kitty - Kitty was my old emulator
+  alacritty
+
+# program launcher
+super + r
+    rofi -show drun
+super + shift + m
+  alacritty -e navi
+
+# Send the window to another edge of the screen
+super + ctrl + {_,shift + }{Left,Down,Up,Right}
+	bspc node -{f,s} {west,south,north,east}
+
+#~button3
+#    bspc query -D -d 'focused.!occupied' && pkill jgmenu && jgmenu
+
+# browser
+super + b 
+    firefox
+
+# file manager
+super + e 
+    thunar
+
+
+# make sxhkd reload its configuration files
+super + Escape
+    pkill -USR1 -x sxhkd
+
+# Lock the screen
+super + shift + x
+    betterlockscreen -l blur
+
+# xkill
+super + shift + c
+    xkill
+
+
+# Audio control
+{_,shift +} XF86AudioRaiseVolume
+    {pactl set-sink-volume @DEFAULT_SINK@ +10%,~/.config/polybar/scripts/spotify-module change-volume up}
+{_,shift +} XF86AudioLowerVolume
+    {pactl set-sink-volume @DEFAULT_SINK@ -10%,~/.config/polybar/scripts/spotify-module change-volume down}
+
+XF86AudioMute       
+    pactl set-sink-mute   @DEFAULT_SINK@   toggle
+XF86AudioMicMute    
+    pactl set-source-mute @DEFAULT_SOURCE@ toggle
+
+XF86Audio{Play,Prev,Next}
+    playerctl {play-pause,previous,next}
+
+
+# Screen brightness control
+#super + {F11,F12}
+#    ~/scripts/bright {down,up}
+
+ Screenshot hotkeys
+{_,shift +} Print
+    flameshot {gui,full --path ~/Pictures/screenshots}
+
+#Screenshot
+#super + shift + s
+#    flameshot gui --path ~/Screenshots
+
+#Print
+#    scrot -c -F ~/Screenshots/$(date +%Y-%d-%m-%H-%M-%S).png && notify-send "Screenshot Saved" "Screenshot has been saved!\n  ~/Screenshots/$(date +%Y-%m-%d-%H-%M-%S)"
+
+# custom bspwm hotkeys
+#
+# change to the next workspace active
+alt + Tab
+    bspc desktop -f next.occupied
+
+
+#
+# bspwm hotkeys
+#
+
+# quit/restart bspwm
+super + alt + {q,r}
+    bspc {quit,wm -r}
+
+# close and kill
+super + {shift + q, k}
+    bspc node -{c,k}
+
+
+
+super + c
+    bspc node -c
+
+#super + k
+#    bspc node -k
+
+# alternate between the tiled and monocle layout
+#super + m
+#    bspc desktop -l next
+
+# send the newest marked node to the newest preselected node
+super + y
+    bspc node newest.marked.local -n newest.!automatic.local
+
+# swap the current node and the biggest window
+super + g
+    bspc node -s biggest.window
+
+# MOVE TO NEXT DESKTOP
+super + {Left,Right} 
+    bspc node -d {prev,next}.local --follow;
+
+
+super + v 
+  bspc node @parent -R 90
+
+#
+# state/flags
+#
+
+# set the window state
+super + {t,shift + t,s,shift + f}
+    bspc node -t {tiled,pseudo_tiled,\~floating,\~fullscreen}
+
+# set the node flags
+super + ctrl + {m,x,y,z}
+    bspc node -g {marked,locked,sticky,private}
+
+#
+# focus/swap
+#
+
+# focus the node in the given direction
+super + {_,shift + }{h,j,k,l}
+    bspc node -{f,s} {west,south,north,east}
+
+# focus the node for the given path jump
+super + {p,b,comma,period}
+    bspc node -f @{parent,brother,first,second}
+
+# focus the next/previous window in the current desktop
+super + {_,shift + }c
+    bspc node -f {next,prev}.local.!hidden.window
+
+# focus the next/previous desktop in the current monitor
+super + bracket{left,right}
+    bspc desktop -f {prev,next}.local
+
+# focus the last node/desktop
+super + {grave,Tab}
+    bspc {node,desktop} -f last
+
+# focus the older or newer node in the focus history
+super + {o,i}
+    bspc wm -h off; \
+    bspc node {older,newer} -f; \
+    bspc wm -h on
+
+# focus or send to the given desktop
+super + {_,shift + }{1-9,0}
+	bspc {desktop -f,node -d} '^{1-9,10}'
+
+#
+# preselect
+#
+
+# preselect the direction
+super + ctrl + {h,j,k,l}
+    bspc node -p {west,south,north,east}
+
+# preselect the ratio
+super + ctrl + {1-9}
+    bspc node -o 0.{1-9}
+
+# cancel the preselection for the focused node
+super + ctrl + space
+    bspc node -p cancel
+
+# cancel the preselection for the focused desktop
+super + ctrl + shift + space
+    bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
+
+#
+# move/resize
+#
+
+# expand a window by moving one of its side outward
+super + shift + {Left,Down,Up,Right}
+    bspc node -z {left -40 0,bottom 0 40,top 0 -40,right 40 0}
+
+# contract a window by moving one of its side inward
+super + alt + {Left,Down,Up,Right}
+    bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
+
+# next window as floating + follow
+super + f
+	bspc rule -a '*' -o state=floating
+
+
+# move a floating window
+super + {h,j,k,l}
+    bspc node -v {-40 0,0 40,0 -40,40 0}
+
+~button3
+    xqp 0 $(xdo id -N Bspwm -n root) && jgmenu 

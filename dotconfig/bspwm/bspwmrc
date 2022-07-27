@@ -1,0 +1,95 @@
+#!/bin/sh
+
+# ╦╔═  ┬  ┬    ┬    ┬  ┌┐┌  ┌─┐    ╔═╗┬─┐┌─┐┬  ┬┬┌─┐┬ ┬┌─┐  ╔═╗┬─┐┌─┐┌─┐┌─┐┌─┐┌─┐┌─┐┌─┐
+# ╠╩╗  │  │    │    │  │││  │ ┬    ╠═╝├┬┘├┤ └┐┌┘││ ││ │└─┐  ╠═╝├┬┘│ ││  ├┤ └─┐└─┐├┤ └─┐
+# ╩ ╩  ┴  ┴─┘  ┴─┘  ┴  ┘└┘  └─┘    ╩  ┴└─└─┘ └┘ ┴└─┘└─┘└─┘  ╩  ┴└─└─┘└─┘└─┘└─┘└─┘└─┘└─┘
+
+
+killall -q polybar; polybar &
+killall -q conky &
+#killall -q picom &
+killall -q nitrogen; nitrogen --restore &
+killall -q sxhkd; sxhkd &
+picom &
+#picom &
+setxkbmap cz & # This will set my keymap to czech layout
+xsetroot -cursor_name left_ptr & # Removes the ugly 'X' cursor
+
+# ╔═╗┌─┐┌┐┌┌─┐┬─┐┌─┐┬    ╔═╗┌─┐┌┐┌┌─┐┬┌─┐┬ ┬┌─┐┬─┐┬┌─┐┌┐┌
+# ║ ╦├┤ │││├┤ ├┬┘├─┤│    ║  │ ││││├┤ ││ ┬│ │├─┤├┬┘││ ││││
+# ╚═╝└─┘┘└┘└─┘┴└─┴ ┴┴─┘  ╚═╝└─┘┘└┘└  ┴└─┘└─┘┴ ┴┴└─┴└─┘┘└┘
+
+
+bspc monitor -d 1 2 3 4 5 6 # Set the number of workspaces to 6
+# Padding from sides for more center-like look and overall better look 
+bspc config top_padding            60 #73
+bspc config bottom_padding         60
+bspc config left_padding           60
+bspc config right_padding          60
+
+bspc config pointer_motion_interval 5
+bspc config focus_follows_pointer   true
+bspc config ignore_ewmh_focus       true
+bspc config pointer_follows_monitor true
+bspc config pointer_action2 resize_side
+bspc config pointer_action2 resize_corner
+
+# Window & border configuration
+bspc config border_width  0 # I've set it to 0 to remove all corners
+bspc config window_gap    16 # 16px gap between tiled windows
+
+bspc config split_ratio          0.52
+#bspc config single_monocle       true
+bspc config borderless_monocle   true
+bspc config gapless_monocle      true
+
+# ╦ ╦  ┬  ┌┐┌  ┌┬┐  ┌─┐  ┬ ┬    ╦═╗  ┬ ┬  ┬    ┌─┐  ┌─┐
+# ║║║  │  │││   ││  │ │  │││    ╠╦╝  │ │  │    ├┤   └─┐
+# ╚╩╝  ┴  ┘└┘  ─┴┘  └─┘  └┴┘    ╩╚═  └─┘  ┴─┘  └─┘  └─┘
+
+
+bspc config initial_polarity second_child
+bspc rule -a firefox         desktop='^2' follow=on # Firefox - Web browser that isn't based on chromium
+bspc rule -a Pavucontrol desktop='^4' state=floating # Audio control
+bspc rule -a Nitrogen        state=floating center=on # Nitrogen - Tool for setting wallpapers, mostly in window managers
+bspc rule -a discord         desktop='^4' state=floating center=on # Discord - Messenger for gamers
+#bspc rule -a ""              desktop='^4' state=floating follow=on center=on # Spotify - Music Player
+bspc rule -a Steam           desktop='^3' state=floating center=on # Steam - The biggest gaming platform
+bspc rule -a lunarclient     desktop='^3' state=floating follow=on center=on # LunarClient - Minecraft Launcher focused for PvP and Optimalization
+bspc rule -a 'Steam:*:Friends List' desktop='^3' state=floating # Sets the steam Friends List to float mode
+bspc rule -a java            desktop='^5' state=floating # Minecraft
+bspc rule -a Lutris          desktop='^3' # Lutris - Gaming platform for windows games on linux
+bspc rule -a Code            desktop='^4' follow=on # Visual Studio Code - Great GUI Text (code) editor
+bspc rule -a qBittorrent     desktop='^1' follow=on state=floating # qBittorrent - The best (free & open-source) bittorrent client
+
+bspc rule -a feh                state=floating # Feh - Fast & Lightweight image viewer
+bspc rule -a Thunar state=floating center=on # Nautilus - GUI File Manager
+
+# Rules for Games
+bspc rule -a robloxplayerlauncher.exe desktop='^4' state=floating # Rule for roblox
+bspc rule -a robloxplayerbeta.exe     desktop='^4' state=floating # - || -
+bspc rule -a EpicGamesLauncher.exe      desktop='^4' state=floating # Rule for League of Legends
+bspc rule -a lxappearance             state=floating
+
+setxkbmap -option grp:alt_shift_toggle cz,us & # Keymap switching with Alt+Tab because I sometimes need both layouts (Czech and US)
+
+# ╔═╗┬ ┬┌┬┐┌─┐┌─┐┌┬┐┌─┐┬─┐┌┬┐
+# ╠═╣│ │ │ │ │└─┐ │ ├─┤├┬┘ │ 
+# ╩ ╩└─┘ ┴ └─┘└─┘ ┴ ┴ ┴┴└─ ┴ 
+
+killall -q dunst; dunst & # Dunst - The lightweight notification daemon
+#polybar & # Polybar - Status bar
+nitrogen --restore & # Nitrogen - Tool for setting wallpapers in Window Managers
+discord & # Discord - Messenger for Gamers
+spotify & # Spotify - Music Player
+steam & # Steam - The biggest gaming platform
+#wal -i ~/Pictures/Wallpapers/1644782127665.jpg
+conky -c $HOME/.config/conky/catppuccin.conf & # Conky - The widget manager
+/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 # Gnome's polkit agent, so I don't need to run programs as root, instead it will ask me for password
+
+# bsp-layout set tall 1
+# bsp-layout set tall 2
+# bsp-layout set tall 3
+# bsp-layout set tall 4
+# bsp-layout set tall 5
+# bsp-layout set tall 6
